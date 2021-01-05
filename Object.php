@@ -13,11 +13,10 @@
             }
         }
 
-        public function parse():void {
-            $config = new config();
-            $db = new database(host: $config->get("db.host"), user: $config->get("db.user"), pass: $config->get("db.pass"), name: $config->get("db.name"));
+        public function parse($db_config):void {
+            $db = new database(host: $db_config["host"], user: $db_config["user"], pass: $db_config["pass"], name: $db_config["name"]);
             // Route Table Name
-            $rtn = $config->get("db.prefix")."routes";
+            $rtn = $db_config["prefix"]."routes";
             $db->prepare("SELECT * FROM ".$rtn." WHERE ".$rtn.".uri = :request_uri");
             $db->bind_and_execute([
                 ":request_uri" => $this->request_uri,
